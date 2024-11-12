@@ -3,59 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>支払い通知</title>
+    <title>会員登録完了通知</title>
     <style>
         body {
             background-color: #fff;
             font-family: Arial, sans-serif;
             color: #333;
             padding: 20px;
-            text-align: center;
+            text-align: left;
         }
-        .warning {
-            background-color: #ffcccc;
+        .notice {
+            background-color: #ffe0e0;
             border: 2px solid #ff0000;
             padding: 20px;
             margin-top: 20px;
         }
-        .device-info {
-            font-size: 18px;
+        .info {
+            font-size: 16px;
             margin-top: 10px;
         }
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
-            color: #fff;
-            background-color: #ff0000;
-            border: none;
-            cursor: pointer;
+        .bank-details {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+        .warning {
+            color: #ff0000;
+            font-weight: bold;
             margin-top: 20px;
         }
-        button:hover {
-            background-color: #cc0000;
+        a {
+            color: #ff0000;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-<h1>重要なお知らせ</h1>
-<div class="warning">
-    あなたの端末で不正な活動が検出されました。<br>
-    即時に支払い手続きを行ってください。
+<h1>会員登録完了のお知らせ</h1>
+<div class="notice">
+    <p>お客様の会員登録が正常に完了しました。</p>
+    <p>現在、利用料金 <strong>¥98,000</strong> が発生しております。至急、以下の口座にお振り込みをお願いいたします。</p>
 </div>
 
-<div class="device-info" id="deviceInfo">端末情報を取得中...</div>
+<div class="bank-details">
+    <p>振込先情報:</p>
+    <ul>
+        <li>銀行名: 稲井銀行</li>
+        <li>支店名: 南境支店</li>
+        <li>口座番号: 1713150</li>
+        <li>振込期限: <span id="deadline"></span></li>
+    </ul>
+</div>
 
-<button id="payButton">支払い手続きを行う</button>
+<div class="info" id="deviceInfo"></div>
+<div class="info" id="registrationTime"></div>
+
+<p class="warning">
+    ※支払いが確認できない場合、法的措置に移行する可能性があります。
+</p>
+
+<p>ご不明な点がある場合は、お問い合わせ窓口までご連絡ください。</p>
+<p>▶︎ <a href="https://inaijhs95.my.canva.site/secret2025" target="_blank">お問い合わせはこちら</a></p>
 
 <script>
+    // 初回アクセス時の登録日時を取得・保存
+    function getRegistrationTime() {
+        const storedTime = localStorage.getItem("registrationTime");
+        if (storedTime) {
+            return new Date(storedTime);
+        } else {
+            const currentTime = new Date();
+            localStorage.setItem("registrationTime", currentTime);
+            return currentTime;
+        }
+    }
+
+    // 支払い期限を計算（登録日時 + 12時間）
+    function calculateDeadline(registrationTime) {
+        const deadline = new Date(registrationTime.getTime() + 12 * 60 * 60 * 1000);
+        return deadline.toLocaleString();
+    }
+
     // ブラウザ情報と OS 情報を取得する関数
     function getBrowserAndOS() {
         const userAgent = navigator.userAgent.toLowerCase();
         let browser = "不明なブラウザ";
         let os = "不明な OS";
 
-        // ブラウザ名の判定
         if (userAgent.includes("chrome")) {
             browser = "Google Chrome";
         } else if (userAgent.includes("firefox")) {
@@ -70,7 +105,6 @@
             browser = "Internet Explorer";
         }
 
-        // OS 名の判定
         if (userAgent.includes("windows")) {
             os = "Windows";
         } else if (userAgent.includes("mac")) {
@@ -88,45 +122,23 @@
         return { browser, os };
     }
 
-    // 端末名とブラウザ・OS情報を表示
+    // 端末情報の表示
     function displayDeviceInfo() {
         const deviceInfo = getBrowserAndOS();
-        const deviceName = getDeviceInfo();
+        const registrationTime = getRegistrationTime();
         document.getElementById("deviceInfo").innerHTML = `
-            あなたの端末: ${deviceName}<br>
-            ブラウザ: ${deviceInfo.browser}<br>
-            OS: ${deviceInfo.os}
+            <p>端末情報:</p>
+            <ul>
+                <li>ブラウザ: ${deviceInfo.browser}</li>
+                <li>OS: ${deviceInfo.os}</li>
+            </ul>
         `;
-    }
-
-    // 端末情報を取得する関数
-    function getDeviceInfo() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        let deviceName = "不明な端末";
-
-        if (userAgent.includes("iphone")) {
-            deviceName = "iPhone";
-        } else if (userAgent.includes("ipad")) {
-            deviceName = "iPad";
-        } else if (userAgent.includes("android")) {
-            deviceName = "Android端末";
-        } else if (userAgent.includes("windows")) {
-            deviceName = "Windows PC";
-        } else if (userAgent.includes("mac")) {
-            deviceName = "Mac PC";
-        }
-
-        return deviceName;
+        document.getElementById("registrationTime").textContent = `登録日時: ${registrationTime.toLocaleString()}`;
+        document.getElementById("deadline").textContent = calculateDeadline(registrationTime);
     }
 
     // 初期表示
     displayDeviceInfo();
-
-    // 支払いボタンのクリックイベント
-    document.getElementById("payButton").addEventListener("click", function() {
-        // リンクへリダイレクト
-        window.location.href = "https://inaijhs95.my.canva.site/secret2025";
-    });
 </script>
 
 </body>

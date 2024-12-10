@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>表示ページ</title>
+    <title>○○○○</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,7 +23,7 @@
             transition: background-color 0.5s;
         }
         .blue {
-            background-color: green; /* アクセス時の色は青 */
+            background-color: green; /* アクセス時の色は緑 */
         }
         #hiddenLink {
             display: none;
@@ -35,7 +35,7 @@
     </style>
 </head>
 <body>
-    <h1>表示ページ</h1>
+    <h1>アクセス状況</h1>
     <p>このページにアクセスしたリンク: <span id="accessedLink"></span></p>
     
     <div class="markers">
@@ -45,7 +45,7 @@
         <div id="marker4" class="marker"></div>
     </div>
     
-    <a id="hiddenLink" href="https://line.me/R/oaMessage/%E5%85%A8%E3%81%A6%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88%E3%82%92%E8%A6%8B%E3%81%A4%E3%81%91%E3%81%BE%E3%81%97%E3%81%9F">非表示リンク</a>
+    <a id="hiddenLink" href="https://line.me/R/oaMessage/%40778unfqy/%E5%85%A8%E3%81%A6%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88%E3%82%92%E8%A6%8B%E3%81%A4%E3%81%91%E3%81%BE%E3%81%97%E3%81%9F">全てのアクセスポイントにたどり着きました</a>
 
     <script>
         // URLパラメータを取得する関数
@@ -54,10 +54,18 @@
             return urlParams.get(param);
         }
 
+        // リンク番号とページ名のマッピング
+        const linkNames = {
+            "1": "お問い合わせページ",
+            "2": "概要ページ",
+            "3": "サービスページ",
+            "4": "サポートページ"
+        };
+
         // アクセスされたリンク番号を取得
         const linkNumber = getQueryParam('link');
-        const accessedLinkText = linkNumber ? `リンク${linkNumber}` : '不明';
-        document.getElementById('accessedLink').textContent = accessedLinkText;
+        const accessedLinkName = linkNumber && linkNames[linkNumber] ? linkNames[linkNumber] : '不明';
+        document.getElementById('accessedLink').textContent = accessedLinkName;
 
         // マーカーの色を更新する関数
         function updateMarker(num) {
@@ -98,10 +106,10 @@
             if (allLinksAccessed()) {
                 const hiddenLink = document.getElementById('hiddenLink');
                 hiddenLink.style.display = 'inline';
-                hiddenLink.href = `https://your-special-link.com`; // 実際のURLに変更
-                hiddenLink.textContent = `特別なリンクを表示`;
+                hiddenLink.textContent = '全てのアクセスポイントにたどり着きました';
+                hiddenLink.href = 'https://line.me/R/oaMessage/%40778unfqy/%E5%85%A8%E3%81%A6%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88%E3%82%92%E8%A6%8B%E3%81%A4%E3%81%91%E3%81%BE%E3%81%97%E3%81%9F';
             }
         }
     </script>
-</body>
+</body> 
 </html>

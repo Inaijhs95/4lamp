@@ -2,144 +2,97 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会員登録完了通知</title>
+    <title>表示ページ</title>
     <style>
         body {
-            background-color: #fff;
             font-family: Arial, sans-serif;
-            color: #333;
-            padding: 20px;
-            text-align: left;
+            text-align: center;
+            margin-top: 50px;
         }
-        .notice {
-            background-color: #ffe0e0;
-            border: 2px solid #ff0000;
-            padding: 20px;
+        .markers {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .marker {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: red; /* 初期色は赤 */
+            transition: background-color 0.5s;
+        }
+        .blue {
+            background-color: green; /* アクセス時の色は青 */
+        }
+        #hiddenLink {
+            display: none;
             margin-top: 20px;
-        }
-        .info {
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        .bank-details {
-            margin-top: 20px;
-            font-weight: bold;
-            color: #000;
-        }
-        .warning {
-            color: #ff0000;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        a {
-            color: #ff0000;
-            text-decoration: underline;
+            font-size: 18px;
+            color: green;
         }
     </style>
 </head>
 <body>
+    <h1>表示ページ</h1>
+    <p>このページにアクセスしたリンク: <span id="accessedLink"></span></p>
+    
+    <div class="markers">
+        <div id="marker1" class="marker"></div>
+        <div id="marker2" class="marker"></div>
+        <div id="marker3" class="marker"></div>
+        <div id="marker4" class="marker"></div>
+    </div>
+    
+    <a id="hiddenLink" href="https://example.com">非表示リンク</a>
 
-<h1>会員登録完了</h1>
-<div class="notice">
-    <p>お客様の会員登録が正常に完了しました。</p>
-    <p>現在、利用料金 <strong>¥98,000</strong> が発生しております。至急、以下の口座にお振り込みをお願いいたします。</p>
-</div>
-
-<div class="bank-details">
-    <p>振込先情報:</p>
-    <ul>
-        <li>銀行名: 稲井銀行</li>
-        <li>支店名: 南境支店</li>
-        <li>口座番号: 1713150</li>
-        <li>振込期限: <span id="deadline"></span></li>
-    </ul>
-</div>
-
-<div class="info" id="deviceInfo"></div>
-<div class="info" id="registrationTime"></div>
-
-<p class="warning">
-    ※支払いが確認できない場合、法的措置に移行する可能性があります。
-</p>
-
-<p>ご不明な点がある場合は、お問い合わせ窓口までご連絡ください。</p>
-<p>▶︎ <a href="https://inaijhs95.my.canva.site/secret2025" target="_blank">お問い合わせはこちら</a></p>
-
-<script>
-    // 初回アクセス時の登録日時を取得・保存
-    function getRegistrationTime() {
-        const storedTime = localStorage.getItem("registrationTime");
-        if (storedTime) {
-            return new Date(storedTime);
-        } else {
-            const currentTime = new Date();
-            localStorage.setItem("registrationTime", currentTime);
-            return currentTime;
-        }
-    }
-
-    // 支払い期限を計算（登録日時 + 12時間）
-    function calculateDeadline(registrationTime) {
-        const deadline = new Date(registrationTime.getTime() + 12 * 60 * 60 * 1000);
-        return deadline.toLocaleString();
-    }
-
-    // ブラウザ情報と OS 情報を取得する関数
-    function getBrowserAndOS() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        let browser = "不明なブラウザ";
-        let os = "不明な OS";
-
-        if (userAgent.includes("chrome")) {
-            browser = "Google Chrome";
-        } else if (userAgent.includes("firefox")) {
-            browser = "Mozilla Firefox";
-        } else if (userAgent.includes("safari")) {
-            browser = "Safari";
-        } else if (userAgent.includes("edge")) {
-            browser = "Microsoft Edge";
-        } else if (userAgent.includes("opera") || userAgent.includes("opr")) {
-            browser = "Opera";
-        } else if (userAgent.includes("msie") || userAgent.includes("trident")) {
-            browser = "Internet Explorer";
+    <script>
+        // URLパラメータを取得する関数
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
         }
 
-        if (userAgent.includes("windows")) {
-            os = "Windows";
-        } else if (userAgent.includes("mac")) {
-            os = "macOS";
-        } else if (userAgent.includes("iphone")) {
-            os = "iOS";
-        } else if (userAgent.includes("ipad")) {
-            os = "iPadOS";
-        } else if (userAgent.includes("android")) {
-            os = "Android";
-        } else if (userAgent.includes("linux")) {
-            os = "Linux";
+        // アクセスされたリンク番号を取得
+        const linkNumber = getQueryParam('link');
+        const accessedLinkText = linkNumber ? `リンク${linkNumber}` : '不明';
+        document.getElementById('accessedLink').textContent = accessedLinkText;
+
+        // マーカーの色を更新する関数
+        function updateMarker(num) {
+            const marker = document.getElementById(`marker${num}`);
+            if (marker) {
+                marker.classList.add('blue');
+            }
         }
 
-        return { browser, os };
-    }
+        // localStorageからアクセス状態を取得・更新
+        if (linkNumber) {
+            // 既にアクセスしたか確認
+            const accessedLinks = JSON.parse(localStorage.getItem('accessedLinks')) || [];
 
-    // 端末情報の表示
-    function displayDeviceInfo() {
-        const deviceInfo = getBrowserAndOS();
-        const registrationTime = getRegistrationTime();
-        document.getElementById("deviceInfo").innerHTML = `
-            <p>端末情報:</p>
-            <ul>
-                <li>ブラウザ: ${deviceInfo.browser}</li>
-                <li>OS: ${deviceInfo.os}</li>
-            </ul>
-        `;
-        document.getElementById("registrationTime").textContent = `登録日時: ${registrationTime.toLocaleString()}`;
-        document.getElementById("deadline").textContent = calculateDeadline(registrationTime);
-    }
+            if (!accessedLinks.includes(linkNumber)) {
+                accessedLinks.push(linkNumber);
+                localStorage.setItem('accessedLinks', JSON.stringify(accessedLinks));
+            }
 
-    // 初期表示
-    displayDeviceInfo();
-</script>
+            // マーカーを更新
+            updateMarker(linkNumber);
 
+            // 非表示リンクを表示
+            const hiddenLink = document.getElementById('hiddenLink');
+            hiddenLink.style.display = 'inline';
+            hiddenLink.textContent = `特別なリンク${linkNumber}`;
+            hiddenLink.href = `https://example.com/page${linkNumber}`;
+        }
+
+        // ページ読み込み時にマーカーを表示状態にする
+        window.onload = function() {
+            const accessedLinks = JSON.parse(localStorage.getItem('accessedLinks')) || [];
+            accessedLinks.forEach(num => {
+                updateMarker(num);
+            });
+        }
+    </script>
 </body>
 </html>

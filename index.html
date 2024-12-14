@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>キャンペーンカウントダウン</title>
+    <title>○○○○</title>
     <!-- Google Fontsの追加 -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -104,8 +104,8 @@
     </style>
 </head>
 <body>
-    <h1>キャンペーンカウントダウン</h1>
-    <p><span id="accessedLink">あなたのサイト</span>からアクセスしました</p>
+    <h1>トランプ探し</h1>
+    <p><span id="accessedLink">あなたのサイト</span>を見つけました</p>
     
     <div class="markers">
         <div id="marker1" class="marker">1</div>
@@ -125,15 +125,15 @@
 
         // リンク番号とページ名のマッピング
         const linkNames = {
-            "1": "♣",
-            "2": "♠",
-            "3": "♦",
-            "4": "♥"
+            "1": "♣のトランプ",
+            "2": "♠のトランプ",
+            "3": "♦のトランプ",
+            "4": "♥のトランプ"
         };
 
         // アクセスされたリンク番号を取得
         const linkNumber = getQueryParam('link');
-        const accessedLinkName = linkNumber && linkNames[linkNumber] ? linkNames[linkNumber] : '不明';
+        const accessedLinkName = linkNumber && linkNames[linkNumber] ? linkNames[linkNumber] : 'なぞのばしょ';
         document.getElementById('accessedLink').textContent = accessedLinkName;
 
         // マーカーの色を更新する関数

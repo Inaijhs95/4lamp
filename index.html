@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>トランプ探し</title>
     <!-- Google Fontsの追加 -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacific+o&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Handlee&display=swap" rel="stylesheet">
     <style>
         /* 全体のスタイル */
         body {
@@ -12,31 +12,32 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            background: url('https://i.imgur.com/your-background-image.png') repeat;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #fff;
+            color: #4b2e83;
             overflow: hidden;
+            position: relative;
         }
 
         /* タイトルのスタイル */
         h1 {
-            font-family: 'Pacific o', cursive;
+            font-family: 'Handlee', cursive;
             font-size: 3.5em;
             margin-bottom: 10px;
-            color: #ffffff;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
-            animation: float 3s ease-in-out infinite;
+            color: #6a1b9a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: float 4s ease-in-out infinite;
         }
 
         /* アクセス元のメッセージ */
         p {
             font-size: 1.3em;
             margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
         /* マーカーコンテナのスタイル */
@@ -53,7 +54,7 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             transition: background-color 0.5s, transform 0.3s, box-shadow 0.3s;
@@ -78,11 +79,11 @@
             opacity: 0.8;
         }
 
-        /* アクセス時の色は緑 */
+        /* アクセス時の色は紫 */
         .blue {
-            background-color: rgba(39, 174, 96, 0.8);
+            background-color: rgba(103, 58, 183, 0.8);
             transform: scale(1.1);
-            box-shadow: 0 12px 24px rgba(39, 174, 96, 0.4);
+            box-shadow: 0 12px 24px rgba(103, 58, 183, 0.4);
         }
 
         /* ホバー効果 */
@@ -97,19 +98,31 @@
             display: none;
             margin-top: 20px;
             font-size: 1.3em;
-            color: #27ae60;
+            color: #6a1b9a;
             text-decoration: none;
-            border: 2px solid #27ae60;
+            border: 2px solid #6a1b9a;
             padding: 12px 25px;
             border-radius: 30px;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(5px);
             transition: background-color 0.3s, color 0.3s, transform 0.3s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hiddenLink::before {
+            content: '🎩';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            animation: slide-in 3s forwards;
         }
 
         #hiddenLink:hover {
-            background-color: #27ae60;
+            background-color: #6a1b9a;
             color: #fff;
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
@@ -147,6 +160,11 @@
             50% { transform: translateY(-15px); }
         }
 
+        @keyframes slide-in {
+            0% { left: -50px; opacity: 0; }
+            100% { left: 10px; opacity: 1; }
+        }
+
         /* パーティクル背景 */
         .particles {
             position: absolute;
@@ -173,10 +191,25 @@
             50% { opacity: 1; transform: scale(1.5) translateY(-100px); }
             100% { opacity: 0; transform: scale(0.5) translateY(-200px); }
         }
+
+        /* 飛び跳ねるウサギのイラスト */
+        .rabbit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 100px;
+            animation: hop 3s infinite;
+        }
+
+        @keyframes hop {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
     </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
+    <img src="https://i.imgur.com/your-rabbit-image.png" alt="Rabbit" class="rabbit">
 
     <h1>トランプ探し</h1>
     <p><span id="accessedLink">あなたのサイト</span>を見つけました</p>
@@ -272,4 +305,3 @@
     </script>
 </body> 
 </html>
-

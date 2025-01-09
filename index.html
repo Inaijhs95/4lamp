@@ -18,6 +18,7 @@
             --container-bg: rgba(0, 0, 0, 0.4);
             --button-bg: rgba(39, 174, 96, 0.7);
             --button-hover-bg: #27ae60;
+            --flash-color: #ffeb3b;
         }
 
         /* 全体のスタイル */
@@ -121,6 +122,17 @@
             transform: scale(1.1);
             box-shadow: 0 8px 16px rgba(39, 174, 96, 0.6);
             color: var(--primary-color);
+        }
+
+        /* 一瞬光るエフェクト */
+        .flash {
+            animation: flash 0.5s ease-in-out;
+        }
+
+        @keyframes flash {
+            0% { background: var(--accent-color); }
+            50% { background: var(--flash-color); }
+            100% { background: var(--accent-color); }
         }
 
         /* ホバー効果 */
@@ -292,6 +304,12 @@
             const marker = document.getElementById(`marker${num}`);
             if (marker) {
                 marker.classList.add('accessed');
+                // 一瞬光るエフェクトを追加
+                marker.classList.add('flash');
+                // エフェクト終了後にクラスを削除
+                setTimeout(() => {
+                    marker.classList.remove('flash');
+                }, 500); // 0.5秒後にクラスを削除
             }
         }
 

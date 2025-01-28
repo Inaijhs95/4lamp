@@ -243,33 +243,48 @@
         }
 
         @keyframes twinkle {
-            0% { opacity: 0; transform: scale(0.5) translateY(0); }
-            50% { opacity: 1; transform: scale(1.5) translateY(-100px); }
-            100% { opacity: 0; transform: scale(0.5) translateY(-200px); }
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5) translateY(-100px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) translateY(-200px);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- パーティクル背景 -->
     <div class="particles" id="particles"></div>
+
+    <!-- メインコンテナ -->
     <div class="container">
         <h1></h1>
+        <!-- どのリンクを踏んだか表示 -->
         <p><span id="accessedLink">あなたのサイト</span>を見つけました</p>
-        
+
+        <!-- マーカー表示部分 -->
         <div class="markers">
             <div id="marker1" class="marker" data-suit="♣">1</div>
             <div id="marker2" class="marker" data-suit="♠">2</div>
             <div id="marker3" class="marker" data-suit="♦">3</div>
             <div id="marker4" class="marker" data-suit="♥">4</div>
         </div>
-        
-        <a id="hiddenLink" href="https://line.me/R/oaMessage/%40778unfqy/%E5%85%A8%E3%81%A6%E3%81%AE%E3%83%88%E3%83%A9%E3%83%B3%E3%83%97%E3%82%92%E8%A6%8B%E3%81%A4%E3%81%91%E3%81%BE%E3%81%97%E3%81%9F">こちらをタップしてください</a>
+
+        <!-- 4つすべて踏んだら表示される隠しリンク -->
+        <a id="hiddenLink" href="#">こちらをタップしてください</a>
     </div>
 
     <script>
         // パーティクルを生成する関数
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            for(let i = 0; i < 100; i++) { // パーティクル数を増やして動きを豊かに
+            for (let i = 0; i < 100; i++) { // パーティクル数
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 particle.style.left = Math.random() * 100 + 'vw';
@@ -286,70 +301,80 @@
             return urlParams.get(param);
         }
 
-        // リンク番号とページ名のマッピング
+        // 4つのトランプリンクを示すランダムっぽいキー文字列と表示名のマッピング
         const linkNames = {
-            "1": "♣のトランプ",
-            "2": "♠のトランプ",
-            "3": "♦のトランプ",
-            "4": "♥のトランプ"
+            "c013be": "♣のトランプ",
+            "s4b519": "♠のトランプ",
+            "dacc32": "♦のトランプ",
+            "he9f44": "♥のトランプ"
         };
 
-        // アクセスされたリンク番号を取得
-        const linkNumber = getQueryParam('link');
-        const accessedLinkName = linkNumber && linkNames[linkNumber] ? linkNames[linkNumber] : 'なにか';
+        // ランダム文字列からID(marker1 ~ marker4)を紐付ける
+        const markerMap = {
+            "c013be": "marker1",
+            "s4b519": "marker2",
+            "dacc32": "marker3",
+            "he9f44": "marker4"
+        };
+
+        // URLパラメータ l を読み取る
+        const linkKey = getQueryParam('l');
+
+        // 表示用のテキストを決定
+        const accessedLinkName = linkKey && linkNames[linkKey] ? linkNames[linkKey] : 'なにか';
         document.getElementById('accessedLink').textContent = accessedLinkName;
 
-        // マーカーの色を更新する関数
-        function updateMarker(num) {
-            const marker = document.getElementById(`marker${num}`);
+        // マーカーを更新する関数
+        function updateMarker(key) {
+            const markerId = markerMap[key];
+            if (!markerId) return; // 対応がない場合は何もしない
+            const marker = document.getElementById(markerId);
             if (marker) {
                 marker.classList.add('accessed');
                 // 一瞬光るエフェクトを追加
                 marker.classList.add('flash');
-                // エフェクト終了後にクラスを削除
+                // 0.5秒後にクラスを削除
                 setTimeout(() => {
                     marker.classList.remove('flash');
-                }, 500); // 0.5秒後にクラスを削除
+                }, 500);
             }
         }
 
-        // すべてのリンクがアクセスされたかをチェックする関数
+        // すべてのリンクがアクセスされたか判定
         function allLinksAccessed() {
             const accessedLinks = JSON.parse(localStorage.getItem('accessedLinks')) || [];
-            return [1, 2, 3, 4].every(num => accessedLinks.includes(num.toString()));
+            // 上記4つすべて含まれているかどうか
+            return ["c013be", "s4b519", "dacc32", "he9f44"].every(key => accessedLinks.includes(key));
         }
 
-        // localStorageからアクセス状態を取得・更新
-        if (linkNumber) {
-            // 既にアクセスしたか確認
-            let accessedLinks = JSON.parse(localStorage.getItem('accessedLinks')) || [];
-
-            if (!accessedLinks.includes(linkNumber)) {
-                accessedLinks.push(linkNumber);
-                localStorage.setItem('accessedLinks', JSON.stringify(accessedLinks));
-            }
-
-            // マーカーを更新
-            updateMarker(linkNumber);
-        }
-
-        // ページ読み込み時にマーカーを表示状態にし、非表示リンクを制御
+        // ページ読み込み時の処理
         window.onload = function() {
             createParticles();
 
-            const accessedLinks = JSON.parse(localStorage.getItem('accessedLinks')) || [];
-            accessedLinks.forEach(num => {
-                updateMarker(num);
-            });
+            // ローカルストレージからアクセス済みリンク情報を取得
+            let accessedLinks = JSON.parse(localStorage.getItem('accessedLinks')) || [];
 
-            // すべてのリンクがアクセスされた場合に非表示リンクを表示
+            // 今回アクセスがあれば記録とマーカー更新
+            if (linkKey) {
+                if (!accessedLinks.includes(linkKey)) {
+                    accessedLinks.push(linkKey);
+                    localStorage.setItem('accessedLinks', JSON.stringify(accessedLinks));
+                }
+                updateMarker(linkKey);
+            }
+
+            // ページを再訪問した場合など、過去のアクセス分もマーカーを更新
+            accessedLinks.forEach(key => updateMarker(key));
+
+            // 4つすべてアクセスされたら隠しリンクを表示
             if (allLinksAccessed()) {
                 const hiddenLink = document.getElementById('hiddenLink');
                 hiddenLink.style.display = 'inline-block';
                 hiddenLink.textContent = 'こちらをタップしてください';
+                // 実際に飛ばしたい最終リンクを設定
                 hiddenLink.href = 'https://line.me/R/oaMessage/%40778unfqy/%E5%85%A8%E3%81%A6%E3%81%AE%E3%83%88%E3%83%A9%E3%83%B3%E3%83%97%E3%82%92%E8%A6%8B%E3%81%A4%E3%81%91%E3%81%BE%E3%81%97%E3%81%9F';
             }
         }
     </script>
-</body> 
+</body>
 </html>
